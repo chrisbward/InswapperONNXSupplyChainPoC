@@ -99,12 +99,14 @@ Fairly obvious to spot, unless buried within a huge model or obfuscated further.
 
 The concept has now been proven.
 
-Resolution: Strip metadata from models
-Resolution: Checksums should be published in order to ensure the model hasn't been tampered with.
+Resolution #1: Strip metadata from models
+
+Resolution #2: Checksums should be published in order to ensure the model hasn't been tampered with.
 
 ### vector #2 - Payload embedded as serialised numpy array, added as a constant value inside original graph
 
 Unlike the metadata payload above, the Constant payload is embedded and not visible at a first glance.
+
 It embeds a payload as a numpy array to be held inside a Constant node instead the onnx model's graph.
 
 Converting payload to a numpy array and then attaching it to an existing model;
@@ -126,13 +128,14 @@ popping calc.exe
 
 The concept has now been proven.
 
-Resolution: remove hanging constant nodes [10]
-Resolution: audit code of third-party tools before running
+Resolution #1: remove hanging constant nodes [10]
+Resolution #2: audit code of third-party tools before running
 
 ### Vector #3 - Payload embedded as serialised numpy array, added as a final-step operation of an existing graph
 
 This one is a little trickier - when dealing with images or audio, a custom operation can be added towards the end of a graph, or within 
 multiple nodes, the payload eventually layered within the output.
+
 Without interrupting or causing suspicion, an attacker can leverage steganography and then deserialise the payload later.
 
 ```python
@@ -182,16 +185,20 @@ On a personal note, I would like to reiterate that there has been no acussation 
 I will reiterate that the "original" inswapper_128.onnx _MAY_ be unsafe, that further changes to this file _MAY_ be unsafe. 
 
 Henry, I think your work on enhancing Roop has been excellent, but I have been consistent with the messaging in this regard - identifying the potential for this scenario very early over on the Roop repository.
+
 I am in no way perfect, but the intention was pure, my mistake here is that I should have simply raised; "file has changed, why?"
+
 The fact that I have tried my very best on multiple ocassions to get the discussion going on this, but have been dismissed heavily and even mistreated by some members of the community, is the reason for the abrupt messaging - you must admit that you do not know what lies within inswapper_128.onnx
 
-Special thanks to the r/stablediffusion mods over on Discord for finding a balance, and mediation of a solution.
+
+~~Special thanks to the r/stablediffusion mods over on Discord for finding a balance, and mediation of a solution.~~
+
 
 ### Reference
 
 #### History, timeline of events
 
-- Roop is published by known security researcher @somed3v (that's an interesting twitter bio bro! [9]), with a pretrained model inswapper_128.onnx, contents unknown
+- Roop is published by known security researcher @s0md3v (that's an interesting twitter bio bro! [9]), with a pretrained model inswapper_128.onnx, contents unknown
 - Google dorking for inswapper_128.onnx shows the checksum to appear in a Russian-language forum
 - The creators of inswapper, Insightface, have since revoked the model from their repository, and refuse to publish the checksum of the file upon request []
 - Raised a ticket/warning in Roop github repository (dismissed), tried to engage the team on discord (kick/banned)
@@ -205,16 +212,18 @@ Special thanks to the r/stablediffusion mods over on Discord for finding a balan
 - The post on r/StableDiffusion has been removed, no explanation given [8]
 - Facefusion Github issue has now been deleted by the Facefusion organisation, the python code that was used to update the model is now lost.
 - Published details of attack vector and at least 2 methods/proofs of concept (this repo)
+- a rogue r/StableDiffusion moderator has decided to remove the second post on reddit [11] and has also banned me from the r/stablediffusion discord chat
 
 #### Resources
 
-[1] https://hiddenlayer.com/research/weaponizing-machine-learning-models-with-ransomware/
-[2] https://5stars217.github.io/2023-03-30-on-malicious-models/
-[3] https://medium.com/featurepreneur/pickle-is-sour-lets-use-onnx-90c0805338ac
-[4] https://github.com/ZhangGe6/onnx-modifier
-[5] https://onnxruntime.ai/docs/api/python/auto_examples/plot_load_and_predict.html
-[6] https://github.com/facefusion/facefusion/blob/master/facefusion/processors/frame/modules/face_swapper.py#L253
-[7] https://github.com/facefusion/facefusion/issues/493
-[8] https://archive.is/Cio8X
-[9] https://web.archive.org/web/20221217024256/https://twitter.com/s0md3v
-[10] https://github.com/microsoft/onnxruntime/issues/1899#issuecomment-840596510
+- [1] https://hiddenlayer.com/research/weaponizing-machine-learning-models-with-ransomware/
+- [2] https://5stars217.github.io/2023-03-30-on-malicious-models/
+- [3] https://medium.com/featurepreneur/pickle-is-sour-lets-use-onnx-90c0805338ac
+- [4] https://github.com/ZhangGe6/onnx-modifier
+- [5] https://onnxruntime.ai/docs/api/python/auto_examples/plot_load_and_predict.html
+- [6] https://github.com/facefusion/facefusion/blob/master/facefusion/processors/frame/modules/face_swapper.py#L253
+- [7] https://github.com/facefusion/facefusion/issues/493
+- [8] https://archive.is/Cio8X
+- [9] https://web.archive.org/web/20221217024256/https://twitter.com/s0md3v
+- [10] https://github.com/microsoft/onnxruntime/issues/1899#issuecomment-840596510
+- [11] https://archive.is/QTtvL 
